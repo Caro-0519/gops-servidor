@@ -1,7 +1,22 @@
 services:
+  backend:
+    build: ./backend
+    container_name: gops-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - gops-data:/data
+    env_file:
+      - path: .env
+        required: false
   frontend:
     build: ./frontend
     container_name: gops-frontend
     restart: unless-stopped
+    depends_on:
+      - backend
     ports:
       - "8080:80"
+volumes:
+  gops-data:
